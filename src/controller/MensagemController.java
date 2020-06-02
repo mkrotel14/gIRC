@@ -7,6 +7,7 @@ package controller;
 
 import dao.ConnectionPG;
 import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 import model.LoginModelo;
 import model.MensagemModelo;
 
@@ -18,11 +19,11 @@ public class MensagemController extends ConnectionPG {
     private StringBuilder sql = new StringBuilder();
     
     public void sendMessage(MensagemModelo mensagem) {
-        super.insertMensagemSQL("INSERT INTO irc.sala_principal (mensagem, usuario) VALUES ('"+ mensagem.getMensagem() +"', "+ mensagem.getUsuario() +")");
+        super.insertMensagemSQL("INSERT INTO irc.sala_principal (mensagem, usuario) VALUES ('"+ mensagem.getMensagem() +"', "+ mensagem.getUsuario() +")");        
     }
     
     public ResultSet getMessage() {
-        return super.executeMensageSQL("SELECT u.id AS usuarioId, u.nome, sp.id AS mensagemId, sp.mensagem FROM irc.sala_principal sp JOIN irc.usuario u ON u.id = sp.usuario");
+        return super.executeMensageSQL("SELECT u.id AS usuarioId, u.nome, sp.id AS mensagemId, sp.mensagem FROM irc.sala_principal sp JOIN irc.usuario u ON u.id = sp.usuario ORDER BY sp.id");
     }
     
     public void deleteMessage(Integer mensagem) {

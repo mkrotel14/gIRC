@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 public class ConnectionPG {
     
     public static Connection conn;
-    public static Statement statement;
+    public static Statement statement = null;
     public static ResultSet resultset;
     public int retorno = 0;
     
@@ -62,22 +62,23 @@ public class ConnectionPG {
         }
     }
     
-    public void executeSQL(String sql) {        
+    public ResultSet executeSQL(String sql) {        
         try {
-            System.out.println(sql);
-            statement = conn.createStatement(
-                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            resultset = statement.executeQuery(sql);
+            Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = st.executeQuery(sql);
+            rs.next();
+            return rs;
         } catch (SQLException sqlex) {
-        }
+            System.out.println(sqlex);
+            return null;
+        }           
     }
     
     public ResultSet executeMensageSQL(String sql ) {
         try {
-            System.out.println(sql);
-            statement = conn.createStatement(
+            Statement st = conn.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            resultset = statement.executeQuery(sql);
+            resultset = st.executeQuery(sql);
             return resultset;
         } catch (SQLException sqlex) {
             JOptionPane.showMessageDialog(null, "Erro ao buscar mensagens");
@@ -87,24 +88,19 @@ public class ConnectionPG {
     
     public void insertUsuarioSQL(String sql) {
         try {
-            statement = conn.createStatement(
+            Statement st = conn.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            retorno = 0;
-            retorno = statement.executeUpdate(sql);
-            if (retorno == 1) {
-                JOptionPane.showMessageDialog(null, "Usuário criado com sucesso");
-            }
+            retorno = st.executeUpdate(sql);            
         } catch (SQLException sqlex) {
-            JOptionPane.showMessageDialog(null, "Erro ao criar novo Usuário");
             retorno = 0;
         }
     }
     
     public void insertMensagemSQL(String sql) {
         try {
-            statement = conn.createStatement(
+            Statement st = conn.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            statement.executeUpdate(sql);
+            st.executeUpdate(sql);
         } catch (SQLException sqlex) {
             JOptionPane.showMessageDialog(null, "Erro ao enviar mensagem!");
         }
@@ -112,9 +108,9 @@ public class ConnectionPG {
     
     public void deleteMessageSQL(String sql) {
         try {
-            statement = conn.createStatement(
+            Statement st = conn.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            statement.executeUpdate(sql);            
+            st.executeUpdate(sql);            
         } catch (SQLException sqlex) {
             JOptionPane.showMessageDialog(null, "Erro em apagar a mensagem!");
         }
@@ -122,9 +118,9 @@ public class ConnectionPG {
     
     public void updateMessageSQL(String sql) {
         try {
-            statement = conn.createStatement(
+            Statement st = conn.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            statement.executeUpdate(sql);            
+            st.executeUpdate(sql);            
         } catch (SQLException sqlex) {
             JOptionPane.showMessageDialog(null, "Erro em atualizar a mensagem!");
         }

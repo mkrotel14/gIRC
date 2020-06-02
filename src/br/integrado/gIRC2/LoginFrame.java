@@ -141,15 +141,14 @@ public class LoginFrame extends javax.swing.JFrame {
         modlogin.setUsuario(jUserField.getText());
         modlogin.setSenha(jSenhaField.getText());
         ret = daologin.loginAccess(modlogin);
-        
-        if (ret.equals(0)){
-            JOptionPane.showMessageDialog(null,"Acesso negado");
-        } else {
-            JOptionPane.showMessageDialog(null, "Olá, seja bem vindo ao gIRC");
+
+        if (ret != null){
+            JOptionPane.showMessageDialog(null, "Olá, seja bem vindo ao gIRC - " + jUserField.getText() +" - ");
             setVisible(false);
-            new MensagensFrame(ret).setVisible(true);
-            
+            new MensagensFrame(ret, modlogin.getUsuario()).setVisible(true);
         }
+        
+        return;
     }//GEN-LAST:event_jEnterButtonActionPerformed
   
     private void jExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExitButtonActionPerformed

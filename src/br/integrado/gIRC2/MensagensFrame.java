@@ -35,10 +35,10 @@ public class MensagensFrame extends javax.swing.JFrame {
     /**
      * Creates new form MensagensFrame
      */
-    public MensagensFrame(Integer usuarioId) {
+    public MensagensFrame(Integer usuarioId, String username) {
         initComponents();
         this.id = usuarioId;
-         System.out.println("FUI CONSTRUIDO");
+        setUserName(username);
         fetchMessages();
     }
 
@@ -59,6 +59,9 @@ public class MensagensFrame extends javax.swing.JFrame {
         jUsuarioLabel = new javax.swing.JLabel();
         jDeleteMessageButton = new javax.swing.JButton();
         jEditMessageButton = new javax.swing.JButton();
+        jTitleLabel = new javax.swing.JLabel();
+        jUsernameLabel = new javax.swing.JLabel();
+        jExitButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("gIRC");
@@ -96,6 +99,24 @@ public class MensagensFrame extends javax.swing.JFrame {
             }
         });
 
+        jTitleLabel.setFont(new java.awt.Font("Courier New", 0, 14)); // NOI18N
+        jTitleLabel.setText("Usuário:");
+
+        jUsernameLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jUsernameLabel.setText("undefined");
+
+        jExitButton.setBackground(new java.awt.Color(255, 0, 51));
+        jExitButton.setForeground(new java.awt.Color(255, 255, 255));
+        jExitButton.setText("Sair");
+        jExitButton.setMaximumSize(new java.awt.Dimension(50, 30));
+        jExitButton.setMinimumSize(new java.awt.Dimension(50, 30));
+        jExitButton.setPreferredSize(new java.awt.Dimension(50, 30));
+        jExitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jExitButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -109,12 +130,18 @@ public class MensagensFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jDeleteMessageButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jEditMessageButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jUsuarioLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jDeleteMessageButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTitleLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jUsernameLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jEditMessageButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -122,8 +149,13 @@ public class MensagensFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jUsuarioLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jMenssagePane, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTitleLabel)
+                    .addComponent(jUsernameLabel)
+                    .addComponent(jExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jMenssagePane, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jDeleteMessageButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,7 +208,7 @@ public class MensagensFrame extends javax.swing.JFrame {
                         }
                         messages.next();
                     } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "Deu ruim macaco" + ex);
+                        JOptionPane.showMessageDialog(null, "Erro ao deletar mensagens");
                     }
                 }
                 
@@ -209,7 +241,7 @@ public class MensagensFrame extends javax.swing.JFrame {
                         }
                         messages.next();
                     } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "Deu ruim macaco" + ex);
+                        JOptionPane.showMessageDialog(null, "Erro ao editar sua mensagem");
                     }
                 }
                 sendOrEdit(messagef);
@@ -218,6 +250,11 @@ public class MensagensFrame extends javax.swing.JFrame {
             Logger.getLogger(MensagensFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jEditMessageButtonActionPerformed
+
+    private void jExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExitButtonActionPerformed
+        setVisible(false);
+            new LoginFrame().setVisible(true);
+    }//GEN-LAST:event_jExitButtonActionPerformed
     
     public void sendOrEdit(String inputText) {        
         isCreate = !isCreate;
@@ -229,6 +266,10 @@ public class MensagensFrame extends javax.swing.JFrame {
             jEditMessageButton.setText("Editar minha última mensagem");
         }
     }
+    
+    public void setUserName (String username){
+        jUsernameLabel.setText(username);
+    }   
     
     public void fetchMessages() {
         try {
@@ -245,7 +286,7 @@ public class MensagensFrame extends javax.swing.JFrame {
                             todas = todas + messages.getString("nome") + ": \t " + messages.getString("mensagem") + "\n";
                             messages.next();
                         } catch (SQLException ex) {
-                            JOptionPane.showMessageDialog(null, "Deu ruim macaco" + ex);
+                            JOptionPane.showMessageDialog(null, "Ops! Ocorreu um erro ao buscar as mensagens do servidor");
                         }
                     }
                 } catch (SQLException ex) {
@@ -288,22 +329,22 @@ public class MensagensFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MensagensFrame(0).setVisible(true);
+                new MensagensFrame(0, "undefined").setVisible(true);
             }
         });
     }
 
-//    private void setLabelName(String nomeUsuario) {
-//        jUsuarioLabel.setText(nomeUsuario);
-//    }
-    
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jDeleteMessageButton;
     private javax.swing.JButton jEditMessageButton;
+    private javax.swing.JButton jExitButton;
     private javax.swing.JScrollPane jMenssagePane;
     private javax.swing.JTextField jMessageInputField;
     private javax.swing.JButton jSendButton;
     private javax.swing.JTextArea jTextArea;
+    private javax.swing.JLabel jTitleLabel;
+    private javax.swing.JLabel jUsernameLabel;
     private javax.swing.JLabel jUsuarioLabel;
     // End of variables declaration//GEN-END:variables
 }
